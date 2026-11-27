@@ -12,4 +12,6 @@ router.get("/", tarefaController.listar);
 
 router.get("/:id", validarId, tarefaController.buscarPorId);
 
+router.post("/", tarefaController.criar);
+
 module.exports = router;
