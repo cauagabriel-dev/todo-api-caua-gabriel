@@ -6,7 +6,8 @@ const validarId = require("../middlewares/validarId");
 
 const router = express.Router();
 
-// As rotas de /tarefas entram aqui. Exemplo:
-// router.get("/", tarefaController.listar);
+// As rotas de /tarefas entram aqui.
+
+router.get("/", tarefaController.listar);
 
 module.exports = router;
