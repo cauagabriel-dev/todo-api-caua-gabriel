@@ -45,9 +45,16 @@ async function atualizarParcialTarefa(id, dados) {
   return await atualizarTarefa(id, tarefa);
 }
 
+async function deletarTarefa(id) {
+    const [resultado] = await db.query("DELETE FROM tarefas WHERE id = ?", [id]);
+    return resultado.affectedRows > 0;
+}
+
 module.exports = { 
     listarTarefas, 
     buscarTarefaPorId, 
     criarTarefa, 
     atualizarTarefa, 
-    atualizarParcialTarefa };
+    atualizarParcialTarefa,
+    deletarTarefa
+};
