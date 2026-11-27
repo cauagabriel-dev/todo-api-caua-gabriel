@@ -17,12 +17,24 @@ async function buscarPorId(req, res) {
 }
 
 async function criar(req, res) {
-  const novaTarefa = await tarefaService.criarTarefa(req.body);
-  res.status(201).json(novaTarefa);
+    const erro = tarefaService.validarTarefa(req.body, true);
+    if (erro) {
+        res.status(400).json({ erro: erro });
+        return;
+    }
+
+    const novaTarefa = await tarefaService.criarTarefa(req.body);
+    res.status(201).json(novaTarefa);
 }
 
 async function atualizar(req, res) {
-  const tarefaAtualizada = await tarefaService.atualizarTarefa(
+    const erro = tarefaService.validarTarefa(req.body, true);
+    if (erro) {
+        res.status(400).json({ erro: erro });
+        return;
+    }
+
+    const tarefaAtualizada = await tarefaService.atualizarTarefa(
     req.params.id,
     req.body
   );
@@ -35,16 +47,22 @@ async function atualizar(req, res) {
 }
 
 async function atualizarParcial(req, res) {
-  const tarefaAtualizada = await tarefaService.atualizarParcialTarefa(
-    req.params.id,
-    req.body
-  );
+    const erro = tarefaService.validarTarefa(req.body, false);
+    if (erro) {
+        res.status(400).json({ erro: erro });
+        return;
+    }
+    
+    const tarefaAtualizada = await tarefaService.atualizarParcialTarefa(
+      req.params.id,
+      req.body
+    );
+  
+    if (!tarefaAtualizada) {
+      return res.status(404).json({ erro: "Tarefa não encontrada" });
+    }
 
-  if (!tarefaAtualizada) {
-    return res.status(404).json({ erro: "Tarefa não encontrada" });
-  }
-
-  res.status(200).json(tarefaAtualizada);
+    res.status(200).json(tarefaAtualizada);
 }
 
 async function deletar(req, res) {
